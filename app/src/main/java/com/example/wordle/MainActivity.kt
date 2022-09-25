@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
     /**
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
      *   '+' represents the right letter in the wrong place
      *   'X' represents a letter not in the target word
      */
-    val wordToGuess = "help"//FourLetterWordList.getRandomFourLetterWord()
+    val wordToGuess = FourLetterWordList.getRandomFourLetterWord()
 
     private fun checkGuess(guess: String) : String {
         var result = ""
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         var guessesUsed = 0
 
         val guessField = findViewById<EditText>(R.id.guessField)
+        val answerTv = findViewById<TextView>(R.id.answerTv)
         val submitButton = findViewById<Button>(R.id.submitButton)
         val guesses = listOf(findViewById<EditText>(R.id.guess1), findViewById(R.id.guess2), findViewById(R.id.guess3))
         val hints = listOf(findViewById<TextView>(R.id.hint1), findViewById(R.id.hint2), findViewById(R.id.hint3))
@@ -55,12 +57,11 @@ class MainActivity : AppCompatActivity() {
                     val result = checkGuess(newGuess.toString())
                     hints[guessesUsed].text = result
                     guessesUsed++
-                    if (result == "0000") {
-                        Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
-                    }
                     if ((result == "0000") or (guessesUsed == 3)) {
                         submitButton.isEnabled = false
                         submitButton.isClickable = false
+                        answerTv.text = wordToGuess
+                        answerTv.isVisible = true
                     }
 
                 }
